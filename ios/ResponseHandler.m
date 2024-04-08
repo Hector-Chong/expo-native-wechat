@@ -6,12 +6,13 @@
 //
 
 #import "ResponseHandler.h"
+#import "RespDataHelper.h"
 
 @implementation ResponseHandler
 
 - (void)onResp:(BaseResp *)resp {
     
-    NSDictionary* convertedData = [RespDataHelper downcastRepoWithBaseResp:resp];
+    NSDictionary* convertedData = [RespDataHelper downcastResp:resp];
     
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
