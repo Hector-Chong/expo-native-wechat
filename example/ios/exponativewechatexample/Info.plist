@@ -27,12 +27,19 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>expo.modules.nativewechat.example</string>
+          <string>wx4351cdd3d762dfbf</string>
+          <string>com.woohelps.overseas-newlife</string>
         </array>
       </dict>
     </array>
     <key>CFBundleVersion</key>
     <string>1</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>weixin</string>
+      <string>weixinULAPI</string>
+      <string>weixinURLParamsAPI</string>
+    </array>
     <key>LSRequiresIPhoneOS</key>
     <true/>
     <key>NSAppTransportSecurity</key>

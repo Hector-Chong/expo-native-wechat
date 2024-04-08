@@ -1,0 +1,129 @@
+//
+//  ExpoNativeWechatModuleParams.swift
+//  ExpoNativeWechat
+//
+//  Created by Hector Chong on 4/7/24.
+//
+
+import ExpoModulesCore
+
+struct RegisterAppParams: Record {
+    @Field
+    var log: Bool = false
+    
+    @Field
+    var appid: String
+    
+    @Field
+    var logPrefix: String?
+    
+    @Field
+    var universalLink: String
+    
+}
+
+struct SendAuthRequestParams: Record {
+    @Field
+    var state: String
+    
+    @Field
+    var scope: String
+}
+
+
+struct ShareTextParams: Record {
+    @Field
+    var text: String
+    
+    @Field
+    var scene: Int
+}
+
+
+struct ShareImageParams: Record {
+    @Field
+    var src: String
+    
+    @Field
+    var scene: Int
+}
+
+struct ShareVideoParams: Record {
+    @Field
+    var videoUrl: String
+    
+    @Field
+    var title: String?
+    
+    @Field
+    var description: String?
+    
+    @Field
+    var videoLowBandUrl: String?
+    
+    @Field
+    var coverUrl: String?
+    
+    @Field
+    var scene: Int
+}
+
+struct ShareWebpageParams: Record {
+    @Field
+    var webpageUrl: String
+    
+    @Field
+    var title: String?
+    
+    @Field
+    var description: String?
+    
+    @Field
+    var coverUrl: String?
+    
+    @Field
+    var scene: Int
+}
+
+struct ShareMiniProgramParams: Record {
+    @Field
+    var userName: String
+    
+    @Field
+    var miniProgramType: Int
+    
+    @Field
+    var webpageUrl: String
+    
+    @Field
+    var path: String
+    
+    @Field
+    var withShareTicket: Bool?
+    
+    @Field
+    var title: String?
+    
+    @Field
+    var description: String?
+    
+    @Field
+    var coverUrl: String?
+}
+
+struct RequestPaymentParams: Record {
+    @Field
+    var partnerId: String
+    
+    @Field
+    var nonceStr: String
+    
+    @Field
+    var prepayId: String
+    
+    @Field
+    var timeStamp: String
+    
+    @Field
+    var sign: String
+}

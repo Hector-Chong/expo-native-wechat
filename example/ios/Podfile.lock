@@ -20,6 +20,7 @@ PODS:
     - ReactCommon/turbomodule/core
   - ExpoNativeWechat (0.1.0):
     - ExpoModulesCore
+    - WechatOpenSDK
   - FBLazyVector (0.73.6)
   - FBReactNativeSpec (0.73.6):
     - RCT-Folly (= 2022.05.16.00)
@@ -1073,6 +1074,7 @@ PODS:
     - React-logger (= 0.73.6)
     - React-perflogger (= 0.73.6)
   - SocketRocket (0.6.1)
+  - WechatOpenSDK (2.0.4)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -1140,6 +1142,7 @@ SPEC REPOS:
     - fmt
     - libevent
     - SocketRocket
+    - WechatOpenSDK
 
 EXTERNAL SOURCES:
   boost:
@@ -1263,7 +1266,7 @@ SPEC CHECKSUMS:
   ExpoFileSystem: eecaf6796aed0f4dd20042dc2ca2cac6c4bc1185
   ExpoKeepAwake: 0f5cad99603a3268e50af9a6eb8b76d0d9ac956c
   ExpoModulesCore: 61dc57c6e2a35f2f84baf488146db624e03af4cd
-  ExpoNativeWechat: d35700d25761c22d78fae9547cc9df933f994bf2
+  ExpoNativeWechat: c39a10295a05d744e668ab77870cb780faed659d
   FBLazyVector: f64d1e2ea739b4d8f7e4740cde18089cd97fe864
   FBReactNativeSpec: 9f2b8b243131565335437dba74923a8d3015e780
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
@@ -1312,6 +1315,7 @@ SPEC CHECKSUMS:
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  WechatOpenSDK: 290989072e87b79d52225a01bb4e5e58f6f88593
   Yoga: 805bf71192903b20fc14babe48080582fee65a80
 
 PODFILE CHECKSUM: 0d6e4100d7d07de5d7279cbc598206d8c07f1ab0
