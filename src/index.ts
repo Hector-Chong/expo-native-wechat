@@ -135,9 +135,15 @@ export const shareText = (request: { text: string; scene: number }) => {
 export const shareImage = (request: { src: string; scene: number }) => {
   assertRegisteration("shareImage");
 
-  const fn = promisifyNativeFunction<Promise<boolean>>(NativeModule.shareImage);
+  return new Promise<boolean>((resolve, reject) => {
+    const id = executeNativeFunction(NativeModule.shareImage)(request);
 
-  return fn(request);
+    notification.once(id, (error, data) => {
+      if (error) reject(error);
+
+      resolve(data);
+    });
+  });
 };
 
 export const shareVideo = (request: {
@@ -150,9 +156,15 @@ export const shareVideo = (request: {
 }) => {
   assertRegisteration("shareVideo");
 
-  const fn = promisifyNativeFunction<Promise<boolean>>(NativeModule.shareVideo);
+  return new Promise<boolean>((resolve, reject) => {
+    const id = executeNativeFunction(NativeModule.shareVideo)(request);
 
-  return fn(request);
+    notification.once(id, (error, data) => {
+      if (error) reject(error);
+
+      resolve(data);
+    });
+  });
 };
 
 export const shareWebpage = (request: {
@@ -164,11 +176,15 @@ export const shareWebpage = (request: {
 }) => {
   assertRegisteration("shareWebpage");
 
-  const fn = promisifyNativeFunction<Promise<boolean>>(
-    NativeModule.shareWebpage,
-  );
+  return new Promise<boolean>((resolve, reject) => {
+    const id = executeNativeFunction(NativeModule.shareWebpage)(request);
 
-  return fn(request);
+    notification.once(id, (error, data) => {
+      if (error) reject(error);
+
+      resolve(data);
+    });
+  });
 };
 
 export const shareMiniProgram = (request: {
@@ -183,11 +199,15 @@ export const shareMiniProgram = (request: {
 }) => {
   assertRegisteration("shareMiniProgram");
 
-  const fn = promisifyNativeFunction<Promise<boolean>>(
-    NativeModule.shareMiniProgram,
-  );
+  return new Promise<boolean>((resolve, reject) => {
+    const id = executeNativeFunction(NativeModule.shareMiniProgram)(request);
 
-  return fn(request);
+    notification.once(id, (error, data) => {
+      if (error) reject(error);
+
+      resolve(data);
+    });
+  });
 };
 
 export const requestPayment = (request: {
@@ -199,19 +219,21 @@ export const requestPayment = (request: {
 }) => {
   assertRegisteration("requestPayment");
 
-  const fn = promisifyNativeFunction<Promise<boolean>>(
-    NativeModule.requestPayment,
-  );
+  return new Promise<SendAuthRequestResponse>((resolve, reject) => {
+    const id = executeNativeFunction(NativeModule.requestPayment)(request);
 
-  return new Promise<NativeWechatResponse>(async (resolve, reject) => {
-    fn(request).catch(reject);
-
-    notification.once("PayResp", (error, response) => {
+    notification.once(id, (error) => {
       if (error) {
         return reject(error);
       }
 
-      return resolve(response);
+      notification.once("PayResp", (error, data) => {
+        if (error) {
+          return reject(error);
+        }
+
+        return resolve(data);
+      });
     });
   });
 };
@@ -223,13 +245,17 @@ export const requestSubscribeMessage = (request: {
 }) => {
   assertRegisteration("requestSubscribeMessage");
 
-  const fn = promisifyNativeFunction<Promise<boolean>>(
-    NativeModule.requestSubscribeMessage,
-  );
+  return new Promise<boolean>((resolve, reject) => {
+    const id = executeNativeFunction(NativeModule.requestSubscribeMessage)(
+      request,
+    );
 
-  request.scene = +request.scene;
+    notification.once(id, (error, data) => {
+      if (error) reject(error);
 
-  return fn(request);
+      resolve(data);
+    });
+  });
 };
 
 export const openCustomerService = (request: {
@@ -238,11 +264,15 @@ export const openCustomerService = (request: {
 }) => {
   assertRegisteration("openCustomerService");
 
-  const fn = promisifyNativeFunction<Promise<boolean>>(
-    NativeModule.openCustomerService,
-  );
+  return new Promise<boolean>((resolve, reject) => {
+    const id = executeNativeFunction(NativeModule.openCustomerService)(request);
 
-  return fn(request);
+    notification.once(id, (error, data) => {
+      if (error) reject(error);
+
+      resolve(data);
+    });
+  });
 };
 
 export const launchMiniProgram = (request: {
@@ -253,19 +283,15 @@ export const launchMiniProgram = (request: {
 }) => {
   assertRegisteration("launchMiniProgram");
 
-  request.miniProgramType = +request.miniProgramType;
+  return new Promise<boolean>((resolve, reject) => {
+    const id = executeNativeFunction(NativeModule.launchMiniProgram)(request);
 
-  const fn = promisifyNativeFunction<Promise<boolean>>(
-    NativeModule.launchMiniProgram,
-  );
+    notification.once(id, (error, data) => {
+      if (error) reject(error);
 
-  notification.once("WXLaunchMiniProgramResp", (error, response) => {
-    if (!error) {
-      return request.onNavBack?.(response);
-    }
+      resolve(data);
+    });
   });
-
-  return fn(request);
 };
 
 export const NativeWechatConstants =
