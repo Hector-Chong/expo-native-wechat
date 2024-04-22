@@ -16,7 +16,7 @@
     
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
-    [center postNotificationName:@"NativeWechatResponseData" object:nil userInfo:convertedData];
+    [center postNotificationName:@"ResponseData" object:nil userInfo:convertedData];
 }
 
 @end

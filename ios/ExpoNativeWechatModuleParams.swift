@@ -7,7 +7,15 @@
 
 import ExpoModulesCore
 
+struct BasicRequestParams: Record {
+    @Field
+    var id: String
+}
+
 struct RegisterAppParams: Record {
+    @Field
+    var id: String
+    
     @Field
     var log: Bool = false
     
@@ -19,19 +27,24 @@ struct RegisterAppParams: Record {
     
     @Field
     var universalLink: String
-    
 }
 
 struct SendAuthRequestParams: Record {
     @Field
+    var id: String
+    
+    @Field
     var state: String
     
     @Field
-    var scope: String
+    var scope: String?
 }
 
 
 struct ShareTextParams: Record {
+    @Field
+    var id: String
+    
     @Field
     var text: String
     
@@ -42,6 +55,9 @@ struct ShareTextParams: Record {
 
 struct ShareImageParams: Record {
     @Field
+    var id: String
+    
+    @Field
     var src: String
     
     @Field
@@ -49,6 +65,9 @@ struct ShareImageParams: Record {
 }
 
 struct ShareVideoParams: Record {
+    @Field
+    var id: String
+    
     @Field
     var videoUrl: String
     
@@ -70,6 +89,9 @@ struct ShareVideoParams: Record {
 
 struct ShareWebpageParams: Record {
     @Field
+    var id: String
+    
+    @Field
     var webpageUrl: String
     
     @Field
@@ -86,6 +108,9 @@ struct ShareWebpageParams: Record {
 }
 
 struct ShareMiniProgramParams: Record {
+    @Field
+    var id: String
+    
     @Field
     var userName: String
     
@@ -113,6 +138,9 @@ struct ShareMiniProgramParams: Record {
 
 struct RequestPaymentParams: Record {
     @Field
+    var id: String
+    
+    @Field
     var partnerId: String
     
     @Field
@@ -126,4 +154,43 @@ struct RequestPaymentParams: Record {
     
     @Field
     var sign: String
+}
+
+struct RequestSubscribeMsgParams: Record {
+    @Field
+    var id: String
+    
+    @Field
+    var scene: Int
+    
+    @Field
+    var templateId: String
+    
+    @Field
+    var reserved: String?
+}
+
+struct LaunchMiniprogramParams: Record {
+    @Field
+    var id: String
+    
+    @Field
+    var userName: String
+    
+    @Field
+    var path: String
+    
+    @Field
+    var miniProgramType: Int
+}
+
+struct OpenCustomerServiceParams: Record {
+    @Field
+    var id: String
+    
+    @Field
+    var corpid: String
+    
+    @Field
+    var url: String
 }
