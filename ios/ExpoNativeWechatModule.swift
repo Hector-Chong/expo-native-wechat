@@ -240,16 +240,7 @@ public class ExpoNativeWechatModule: Module {
             object.webpageUrl = params.webpageUrl
             object.path = params.path
             object.withShareTicket = params.withShareTicket ?? false
-            object.miniProgramType = switch params.miniProgramType {
-            case 0:
-                WXMiniProgramType.release
-            case 1:
-                WXMiniProgramType.test
-            case 2:
-                WXMiniProgramType.preview
-            default:
-                WXMiniProgramType.release
-            }
+            object.miniProgramType = WXMiniProgramType(rawValue: UInt(params.miniProgramType))!
             
             let message = WXMediaMessage()
             
@@ -325,7 +316,7 @@ public class ExpoNativeWechatModule: Module {
             
             req.userName = params.userName
             req.path = params.path
-            req.miniProgramType = UInt32(params.miniProgramType) as! WXMiniProgramType
+            req.miniProgramType = WXMiniProgramType(rawValue: UInt(UInt32(params.miniProgramType)))!
             
             WXApi.send(req) { success in
                 self.sendEvent("ResponseData", ["id": params.id, "success": success])
