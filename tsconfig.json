@@ -4,6 +4,6 @@
   "compilerOptions": {
     "outDir": "./build"
   },
-  "include": ["./src"],
+  "include": ["./src", "app.plugin.js"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*"]
 }
