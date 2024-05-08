@@ -17,7 +17,7 @@ public class ExpoNativeWechatModule: Module {
     @objc func handleResponse(_ notification: Notification) {
         let data = notification.userInfo as! [String : Any]
         
-        sendEvent("ResponseFromNotfication", data)
+        sendEvent("ResponseFromNotification", data)
     }
     
     public func definition() -> ModuleDefinition {
@@ -28,7 +28,7 @@ public class ExpoNativeWechatModule: Module {
         }
         
         Events("ResponseData")
-        Events("ResponseFromNotfication")
+        Events("ResponseFromNotification")
         
         Function("getConstants") {
             return [

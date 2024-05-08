@@ -1,11 +1,45 @@
-import { StyleSheet, Text, View } from 'react-native';
-
-import * as ExpoNativeWechat from 'expo-native-wechat';
+import {
+  NativeWechatConstants,
+  NativeWechatShareScene,
+  registerApp,
+  sendAuthRequest,
+  shareText,
+} from "expo-native-wechat";
+import { useEffect } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
 
 export default function App() {
+  const onAuth = async () => {
+    const data = await sendAuthRequest({
+      scope: "snsapi_userinfo",
+    });
+
+    console.log("auth", data);
+  };
+
+  const onShareText = async () => {
+    const data = await shareText({
+      text: "hello",
+      scene: NativeWechatShareScene.WXSceneSession,
+    });
+
+    console.log("text", data);
+  };
+
+  useEffect(() => {
+    registerApp({
+      appid: "wx4351cdd3d762dfbf",
+      universalLink: "https://app.woohelps.com",
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text>{ExpoNativeWechat.hello()}</Text>
+      <Text>hello</Text>
+
+      <Button title="auth" onPress={onAuth} />
+
+      <Button title="text" onPress={onShareText} />
     </View>
   );
 }
@@ -13,8 +47,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

@@ -56,10 +56,8 @@ export const registerApp = (request: {
   });
 
   emitter.addListener(
-    "ResponseFromNotfication",
+    "ResponseFromNotification",
     (response: NativeWechatResponse) => {
-      console.log("ResponseFromNotfication", response);
-
       const error = response.errorCode ? generateError(response) : null;
 
       notification.dispatch(response.type!, error, response);

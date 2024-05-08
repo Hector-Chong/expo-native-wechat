@@ -5,6 +5,82 @@ apply plugin: 'maven-publish'
 group = 'expo.modules.nativewechat'
 version = '0.1.0'
 
+def rootProject = getRootProject()
+def rootProjectAndroidPath = rootProject.projectDir.toPath()
+def appJsonPath = rootProjectAndroidPath.resolve("../app.json")
+
+def jsonFile = file(appJsonPath)
+def jsonSlurper = new groovy.json.JsonSlurper()
+def jsonData = jsonSlurper.parse(jsonFile)
+
+def packageName = jsonData.expo.android.package + ".wxapi";
+def packageDir = packageName.replace('.', '/')
+
+
+task generateWechatEntryActivity {
+  def activityTemplate = '''
+package %s;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+
+public class WXEntryActivity extends Activity {
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    try {
+      Intent intent = getIntent();
+      Intent intentToBroadcast = new Intent();
+
+      intentToBroadcast.setAction("com.hector.nativewechat.ACTION_REDIRECT_INTENT");
+      intentToBroadcast.putExtra("intent", intent);
+
+      sendBroadcast(intentToBroadcast);
+
+      finish();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+'''
+
+  def baseActivityFolder = new File("${rootProjectAndroidPath}/app/src/main/java/${packageDir}");
+
+  if (!baseActivityFolder.exists()) {
+    baseActivityFolder.mkdirs();
+  }
+
+  def activityCode = String.format(activityTemplate, packageName)
+  def activityFile = new File("${rootProjectAndroidPath}/app/src/main/java/${packageDir}/WXEntryActivity.java")
+
+  activityFile.text = activityCode
+}
+
+task generateWechatPayEntryActivity {
+  def activityTemplate = '''
+package %s;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class WXPayEntryActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        finish();
+    }
+}
+'''
+  def activityCode = String.format(activityTemplate, packageName)
+  def activityFile = new File("${rootProjectAndroidPath}/app/src/main/java/${packageDir}/WXPayEntryActivity.java")
+
+  activityFile.text = activityCode
+}
+
 buildscript {
   def expoModulesCorePlugin = new File(project(":expo-modules-core").projectDir.absolutePath, "ExpoModulesCorePlugin.gradle")
   if (expoModulesCorePlugin.exists()) {
@@ -32,21 +108,6 @@ buildscript {
 
   dependencies {
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${getKotlinVersion()}")
-  }
-}
-
-afterEvaluate {
-  publishing {
-    publications {
-      release(MavenPublication) {
-        from components.release
-      }
-    }
-    repositories {
-      maven {
-        url = mavenLocal().url
-      }
-    }
   }
 }
 
@@ -89,4 +150,24 @@ repositories {
 dependencies {
   implementation project(':expo-modules-core')
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${getKotlinVersion()}"
+
+  api 'com.tencent.mm.opensdk:wechat-sdk-android:+'
+}
+
+afterEvaluate {
+  preBuild.dependsOn(generateWechatEntryActivity)
+  preBuild.dependsOn(generateWechatPayEntryActivity)
+
+  publishing {
+    publications {
+      release(MavenPublication) {
+        from components.release
+      }
+    }
+    repositories {
+      maven {
+        url = mavenLocal().url
+      }
+    }
+  }
 }
