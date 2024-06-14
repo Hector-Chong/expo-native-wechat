@@ -32,12 +32,12 @@ public class ExpoNativeWechatModule: Module {
         
         Function("getConstants") {
             return [
-                "WXSceneSession": WXSceneSession,
-                "WXSceneTimeline": WXSceneTimeline,
-                "WXSceneFavorite": WXSceneFavorite,
-                "WXMiniProgramTypeRelease": WXMiniProgramType.release,
-                "WXMiniProgramTypeTest": WXMiniProgramType.test,
-                "WXMiniProgramTypePreview": WXMiniProgramType.preview,
+                "WXSceneSession": WXSceneSession.rawValue,
+                "WXSceneTimeline": WXSceneTimeline.rawValue,
+                "WXSceneFavorite": WXSceneFavorite.rawValue,
+                "WXMiniProgramTypeRelease": WXMiniProgramType.release.rawValue,
+                "WXMiniProgramTypeTest": WXMiniProgramType.test.rawValue,
+                "WXMiniProgramTypePreview": WXMiniProgramType.preview.rawValue,
             ]
         }
         
