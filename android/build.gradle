@@ -150,6 +150,7 @@ repositories {
 dependencies {
   implementation project(':expo-modules-core')
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${getKotlinVersion()}"
+  implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
   api 'com.tencent.mm.opensdk:wechat-sdk-android:+'
 }

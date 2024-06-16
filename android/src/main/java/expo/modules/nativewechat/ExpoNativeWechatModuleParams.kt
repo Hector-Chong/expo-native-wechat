@@ -130,6 +130,9 @@ class ShareMiniProgramParams : Record {
 
   @Field
   val coverUrl: String? = null
+
+  @Field
+  val scene: Int = 0
 }
 
 class RequestPaymentParams : Record {
@@ -150,6 +153,9 @@ class RequestPaymentParams : Record {
 
   @Field
   val sign: String = ""
+
+  @Field
+  val extData: String = ""
 }
 
 class RequestSubscribeMsgParams : Record {
