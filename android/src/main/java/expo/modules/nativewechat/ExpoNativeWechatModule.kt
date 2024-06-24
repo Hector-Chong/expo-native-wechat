@@ -20,6 +20,7 @@ import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
 import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject
 import com.tencent.mm.opensdk.modelmsg.WXTextObject
 import com.tencent.mm.opensdk.modelmsg.WXVideoObject
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject
 import com.tencent.mm.opensdk.modelpay.PayReq
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
@@ -126,14 +127,41 @@ class ExpoNativeWechatModule : Module(), IWXAPIEventHandler {
       )
     }
 
-    Function("shareWebpage") { params: ShareImageParams ->
-      val src = params.src
+    Function("shareWebpage") { params: ShareWebpageParams ->
+      val webpageUrl = params.webpageUrl
+      val title = params.title
+      val description = params.description
+      val coverUrl = params.coverUrl
       val scene = params.scene
 
-      ExpoNativeWechatUtils.downloadFileAsBitmap(src,
-        object : DownloadBitmapCallback {
+      val webpageObj = WXWebpageObject()
+      webpageObj.webpageUrl = webpageUrl
+
+      val msg = WXMediaMessage(webpageObj)
+      msg.title = title
+      msg.description = description
+
+      val onCoverDownloaded: (Bitmap?) -> Unit = { bitmap ->
+        bitmap?.let {
+          msg.thumbData = ExpoNativeWechatUtils.bmpToByteArray(bitmap, 32, true)
+        }
+
+        val req = SendMessageToWX.Req()
+        req.message = msg
+        req.scene = scene
+
+        sendEvent(
+          "ResponseData", bundleOf(
+            "id" to params.id,
+            "success" to wxApi?.sendReq(req)
+          )
+        )
+      }
+
+      if (!coverUrl.isNullOrEmpty()) {
+        ExpoNativeWechatUtils.downloadFileAsBitmap(coverUrl, object : DownloadBitmapCallback {
           override fun onFailure(call: Call, e: IOException) {
-            sendEvent(
+            this@ExpoNativeWechatModule.sendEvent(
               "ResponseData", bundleOf(
                 "id" to params.id,
                 "success" to false,
@@ -143,31 +171,12 @@ class ExpoNativeWechatModule : Module(), IWXAPIEventHandler {
           }
 
           override fun onResponse(bitmap: Bitmap) {
-            val imgObj = WXImageObject(bitmap)
-
-            val msg = WXMediaMessage()
-            msg.mediaObject = imgObj
-
-            msg.thumbData = ExpoNativeWechatUtils.compressImage(bitmap, 128)?.let {
-              ExpoNativeWechatUtils.bmpToByteArray(
-                it,
-                true
-              )
-            }
-            bitmap.recycle()
-
-            val req = SendMessageToWX.Req()
-            req.message = msg
-            req.scene = scene
-
-            sendEvent(
-              "ResponseData", bundleOf(
-                "id" to params.id,
-                "success" to wxApi?.sendReq(req)
-              )
-            )
+            onCoverDownloaded(bitmap)
           }
         })
+      } else {
+        onCoverDownloaded(null)
+      }
     }
 
     Function("shareVideo") { params: ShareVideoParams ->
@@ -189,9 +198,7 @@ class ExpoNativeWechatModule : Module(), IWXAPIEventHandler {
 
       val onCoverDownloaded: (Bitmap?) -> Unit = { bitmap ->
         bitmap?.let {
-          msg.thumbData = ExpoNativeWechatUtils.bmpToByteArray(
-            ExpoNativeWechatUtils.compressImage(bitmap, 128)!!, true
-          )
+          msg.thumbData = ExpoNativeWechatUtils.bmpToByteArray(bitmap, 32, true)
         }
 
         val req = SendMessageToWX.Req()
@@ -251,9 +258,7 @@ class ExpoNativeWechatModule : Module(), IWXAPIEventHandler {
 
       val onCoverDownloaded: (Bitmap?) -> Unit = { bitmap ->
         bitmap?.let {
-          msg.thumbData = ExpoNativeWechatUtils.bmpToByteArray(
-            ExpoNativeWechatUtils.compressImage(bitmap, 128)!!, true
-          )
+          msg.thumbData = ExpoNativeWechatUtils.bmpToByteArray(bitmap, 32, true)
         }
 
         val req = SendMessageToWX.Req()

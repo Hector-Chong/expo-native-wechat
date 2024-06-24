@@ -38,69 +38,23 @@ object ExpoNativeWechatUtils {
     })
   }
 
-  fun bmpToByteArray(bmp: Bitmap, needRecycle: Boolean): ByteArray {
-    var i: Int
-    var j: Int
-    if (bmp.height > bmp.width) {
-      i = bmp.width
-      j = bmp.width
-    } else {
-      i = bmp.height
-      j = bmp.height
+  fun bmpToByteArray(bmp: Bitmap, size: Int, needRecycle: Boolean): ByteArray {
+    val outputStream = ByteArrayOutputStream()
+    bmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
+    var quality = 100
+
+    while (outputStream.toByteArray().size / 1024 > size && quality != 10) {
+      outputStream.reset();
+
+      bmp.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+
+      quality -= 10;
     }
 
-    val localBitmap = Bitmap.createBitmap(i, j, Bitmap.Config.RGB_565)
-    val localCanvas = Canvas(localBitmap)
+    if (needRecycle) bmp.recycle()
 
-    while (true) {
-      localCanvas.drawBitmap(bmp, Rect(0, 0, i, j), Rect(0, 0, i, j), null)
-      if (needRecycle) bmp.recycle()
-      val localByteArrayOutputStream = ByteArrayOutputStream()
-      localBitmap.compress(
-        Bitmap.CompressFormat.JPEG, 100,
-        localByteArrayOutputStream
-      )
-      localBitmap.recycle()
-      val arrayOfByte = localByteArrayOutputStream.toByteArray()
-      try {
-        localByteArrayOutputStream.close()
-        return arrayOfByte
-      } catch (e: Exception) {
-        //F.out(e);
-      }
-      i = bmp.height
-      j = bmp.height
-    }
-  }
-
-  fun compressImage(image: Bitmap, size: Int): Bitmap? {
-    val baos = ByteArrayOutputStream()
-    image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-    var options = 100
-
-    while (baos.toByteArray().size / 1024 > size) {
-      // 重置baos即清空baos
-      baos.reset()
-      if (options > 10) {
-        options -= 8
-      } else {
-        return compressImage(
-          Bitmap.createScaledBitmap(
-            image,
-            280,
-            image.height / image.width * 280,
-            true
-          ), size
-        )
-      }
-      // 这里压缩options%，把压缩后的数据存放到baos中
-      image.compress(Bitmap.CompressFormat.JPEG, options, baos)
-    }
-
-    val isBm = ByteArrayInputStream(baos.toByteArray())
-    val newBitmap = BitmapFactory.decodeStream(isBm, null, null)
-
-    return newBitmap
+    return outputStream.toByteArray()
   }
 
   interface DownloadBitmapCallback {
