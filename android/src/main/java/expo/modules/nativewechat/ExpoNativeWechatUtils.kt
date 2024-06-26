@@ -26,12 +26,14 @@ object ExpoNativeWechatUtils {
 
       override fun onResponse(call: Call, response: Response) {
         response.use { res ->
-          if (!response.isSuccessful) throw IOException("Unexpected code $response")
+          if (!response.isSuccessful) {
+            callback.onFailure(call, IOException("Unexpected code $response"));
+          } else {
+            val bytes = res.body?.bytes()
 
-          val bytes = res.body?.bytes()
-
-          if (bytes != null) {
-            callback.onResponse(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
+            if (bytes != null) {
+              callback.onResponse(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
+            }
           }
         }
       }
@@ -44,12 +46,12 @@ object ExpoNativeWechatUtils {
 
     var quality = 100
 
-    while (outputStream.toByteArray().size / 1024 > size && quality != 10) {
+    while (outputStream.toByteArray().size / 1024 > size && quality != 4) {
       outputStream.reset();
 
       bmp.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
 
-      quality -= 10;
+      quality -= 4;
     }
 
     if (needRecycle) bmp.recycle()
