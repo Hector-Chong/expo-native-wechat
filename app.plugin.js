@@ -25,6 +25,13 @@ module.exports = (config) => {
         "android:launchMode": "singleTask",
       },
     });
+    mainApplication.activity?.push({
+      $: {
+        "android:name": ".wxapi.WXPayEntryActivity",
+        "android:label": "@string/app_name",
+        "android:exported": "true",
+      },
+    });
     return config;
   });
 };
