@@ -69,7 +69,7 @@ class ExpoNativeWechatModule : Module(), IWXAPIEventHandler {
         override fun onReceive(context: Context, intent: Intent) {
           handleIntent(intent.extras!!["intent"] as Intent?)
         }
-      }, IntentFilter(REDIRECT_INTENT_ACTION), Context.RECEIVER_NOT_EXPORTED);
+      }, IntentFilter(REDIRECT_INTENT_ACTION), Context.RECEIVER_EXPORTED);
 
       this@ExpoNativeWechatModule.sendEvent(
         "ResponseData", bundleOf(
