@@ -1,6 +1,6 @@
 {
   "name": "expo-native-wechat",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A Expo Module for supporting Wechat APIs on Android and iOS",
   "main": "build/index.js",
   "types": "build/index.d.ts",

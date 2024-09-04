@@ -60,12 +60,24 @@ const withAndroidActivity = (config) => {
         import android.os.Bundle;
 
         public class WXPayEntryActivity extends Activity {
-            @Override
-            protected void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
+          @Override
+          public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
 
-                finish();
+            try {
+              Intent intent = getIntent();
+              Intent intentToBroadcast = new Intent();
+
+              intentToBroadcast.setAction("com.hector.nativewechat.ACTION_REDIRECT_INTENT");
+              intentToBroadcast.putExtra("intent", intent);
+
+              sendBroadcast(intentToBroadcast);
+
+              finish();
+            } catch (Exception e) {
+              e.printStackTrace();
             }
+          }
         }
         `;
 
