@@ -57,6 +57,7 @@ const withAndroidActivity = (config) => {
         package ${config.android?.package}.wxapi;
 
         import android.app.Activity;
+        import android.content.Intent;
         import android.os.Bundle;
 
         public class WXPayEntryActivity extends Activity {
