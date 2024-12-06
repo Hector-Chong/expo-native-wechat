@@ -1,4 +1,4 @@
-import { EventEmitter } from "expo-modules-core";
+import { LegacyEventEmitter as EventEmitter } from "expo-modules-core";
 
 import NativeModule from "./module";
 import Notification from "./notification";
