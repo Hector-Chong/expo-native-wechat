@@ -37,6 +37,24 @@ Especially, WeChat OpenSDK is something pain in the ass because of [shitty docs]
 
 # Getting Started
 
+## Installation
+
+### Expo SDK 51 and below
+
+```bash
+npm install expo-native-wechat@0.1.x
+# or
+yarn add expo-native-wechat@0.1.x
+```
+
+### Expo SDK 52 and above
+
+```bash
+npm install expo-native-wechat@0.2.x
+# or
+yarn add expo-native-wechat@0.2.x
+```
+
 ## Configuration
 
 Open `app.json` and add the following information:
